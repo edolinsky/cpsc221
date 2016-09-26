@@ -47,10 +47,8 @@ DLL_Deque::~DLL_Deque() {
 void DLL_Deque::pushL(const Object& x) {
     if (is_empty())
         left = right = new Node(x);
-    else {
-        left = left->prev = new Node(x, left);
-    }
-
+    else
+        left = left->prev = new Node(x,left);
 }
 
 void DLL_Deque::pushR(const Object& x) {
@@ -63,9 +61,7 @@ void DLL_Deque::pushR(const Object& x) {
 Object DLL_Deque::popL() {
     assert(!is_empty());
     Object x = left->data;
-
     left = left->next;
-
     if (left) {
         delete left->prev;
         left->prev = NULL;
@@ -79,9 +75,7 @@ Object DLL_Deque::popL() {
 Object DLL_Deque::popR() {
     assert(!is_empty());
     Object x = right->data;
-
     right = right->prev;
-
     if (right) {
         delete right->next;
         right->next = NULL;
@@ -104,11 +98,13 @@ void DLL_Deque::removeDuplicates() {
             repeat = repeat->next;
             if (repeat != current) {
                 current->next = repeat->next;
-                if (current->next)
+                if (current->next) {
                     current->next->prev = current;
-                else
+                } else {
                     right = current;
+                }
                 delete repeat;
+                repeat = current;
             }
         }
         current = current->next;

@@ -40,29 +40,32 @@ public:
 DLL_Deque::DLL_Deque() : left(NULL), right(NULL) {}
 
 DLL_Deque::~DLL_Deque() {
-  while (!is_empty())
-    popL();
+    while (!is_empty())
+        popL();
 }
 
 void DLL_Deque::pushL(const Object& x) {
-  if (is_empty())
-    left = right = new Node(x);
-  else
-    left = left->prev = new Node(x,left);
+    if (is_empty())
+        left = right = new Node(x);
+    else {
+        left = left->prev = new Node(x, left);
+    }
 
 }
 
 void DLL_Deque::pushR(const Object& x) {
-  if (is_empty())
-    left = right = new Node(x);
-  else
-    right = right->next = new Node(x,NULL,right);
+    if (is_empty())
+        left = right = new Node(x);
+    else
+        right = right->next = new Node(x,NULL,right);
 }
 
 Object DLL_Deque::popL() {
     assert(!is_empty());
     Object x = left->data;
+
     left = left->next;
+
     if (left) {
         delete left->prev;
         left->prev = NULL;
@@ -76,7 +79,9 @@ Object DLL_Deque::popL() {
 Object DLL_Deque::popR() {
     assert(!is_empty());
     Object x = right->data;
+
     right = right->prev;
+
     if (right) {
         delete right->next;
         right->next = NULL;
@@ -92,21 +97,23 @@ bool DLL_Deque::is_empty() const {
 }
 
 void DLL_Deque::removeDuplicates() {
-  Node *current = left;
-  while (current) {
-    Node* repeat = current;
-    while (repeat->next && repeat->next->data == current->data)
-      repeat = repeat->next;
-    if (repeat != current) {
-      current->next = repeat->next;
-      if (current->next)
-	current->next->prev = current;
-      else
-	right = current;
-      delete repeat;
+    Node *current = left;
+    while (current) {
+        Node* repeat = current;
+        while (repeat->next && repeat->next->data == current->data) {
+            repeat = repeat->next;
+            if (repeat != current) {
+                current->next = repeat->next;
+                if (current->next)
+                    current->next->prev = current;
+                else
+                    right = current;
+                delete repeat;
+            }
+        }
+        current = current->next;
     }
-    current = current->next;
-  }
+
 }
 
 // CLIENT CODE:

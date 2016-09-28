@@ -9,11 +9,11 @@
  * POST: the new Node is now the head of the linked_list
  */ 
 void insert(Node*& head, int newKey) {
-  Node * curr = new Node;
-  curr->key  = newKey;
-  curr->next = head;
+    Node * curr = new Node;
+    curr->key  = newKey;
+    curr->next = head;
 
-  head = curr;
+    head = curr;
 }
 
 /**
@@ -21,12 +21,12 @@ void insert(Node*& head, int newKey) {
  * PRE: head is the first node in a linked_list (if NULL, linked_list is empty) 
  */ 
 void print(Node* head) {
-  std::cout << "[";
-  for (Node* curr = head; curr != NULL; curr = curr->next){ 
-    std::cout << curr->key;
-    if (curr->next != NULL) std::cout << ", ";
-  }
-  std::cout << "]" << std::endl;
+    std::cout << "[";
+    for (Node* curr = head; curr != NULL; curr = curr->next){
+        std::cout << curr->key;
+        if (curr->next != NULL) std::cout << ", ";
+    }
+    std::cout << "]" << std::endl;
 }
 
 /** 
@@ -34,8 +34,8 @@ void print(Node* head) {
  * PRE: head is the first node in a linked_list (if NULL, linked_list is empty) 
  */ 
 int size(Node* head){ 
-  if (! head) return 0; 
-  return 1 + size(head->next); 
+    if (! head) return 0;
+    return 1 + size(head->next);
 }
 
 /**
@@ -44,11 +44,11 @@ int size(Node* head){
  * POST: a new vector<int> containing the keys in the correct order has been returned.  
  */ 
 std::vector<int> to_vector(Node* head) {
-  std::vector<int> result;
-  for (Node* curr = head; curr != NULL; curr = curr->next){ 
-    result.push_back(curr->key); 
-  }
-  return result; 
+    std::vector<int> result;
+    for (Node* curr = head; curr != NULL; curr = curr->next){
+        result.push_back(curr->key);
+    }
+    return result;
 }
 
 /** 
@@ -59,8 +59,23 @@ std::vector<int> to_vector(Node* head) {
  * POST: else head remains the first Node in the linked_list
  */
 void delete_last_element(Node*& head){
-  // ******** WRITE YOUR CODE HERE ********
 
+    if (head->next == NULL) {       // if head is only element,
+        delete head;                // delete head
+        head = NULL;
+
+    } else if (&head != NULL) {     // otherwise
+        Node* end = head->next;
+        Node* penultimate = head;
+
+        while (end->next != NULL){  // iterate over elements until we're at the end
+            penultimate = end;
+            end = end->next;
+        }
+
+        delete end;                 // delete end node and allocate new end
+        penultimate->next = NULL;
+    }
 }
 
 /**
@@ -73,8 +88,44 @@ void delete_last_element(Node*& head){
  * POST: head is the new first Node of the linked_list, if updated
  */ 
 void remove(Node*& head, int oldKey) {
-  // ******** WRITE YOUR CODE HERE ********
 
+    Node* right = head->next;
+    Node* left = head;
+
+    if (&head == NULL) {                    // do nothing if empty
+        return;
+
+    } else if (head->key == oldKey) {       // key corresponds to head
+
+        if (head->next == NULL) {           // if head is sole member, delete and point to null
+            delete head;
+            head = NULL;
+        } else {
+            Node* temp = head;             // otherwise, delete and allocate new head
+            head = head->next;
+            delete temp;
+        }
+
+    } else {
+
+        while (right->next != NULL) {       // iterate through list
+
+            if(right->key == oldKey) {      // if a match is found, link previous node to next
+                Node *temp = right;
+                left->next = right->next;
+                delete temp;                // and delete matching node
+                return;
+            }
+
+            left = left->next;              // iterate to next pair
+            right = left->next->next;
+        }
+
+        if (right->key == oldKey) {         // if at end, delete end node and allocate new end
+            delete right;
+            left->next = NULL;
+        }
+    }
 }
 
 /**
@@ -87,9 +138,33 @@ void remove(Node*& head, int oldKey) {
  * POST: else a new Node (with key=newKey) is right after the Node with key = oldKey.
  */
 void insert_after(Node* head, int oldKey, int newKey){
-  // ******** WRITE YOUR CODE HERE ********
 
+    if (head != NULL) {                         // do nothing if empty
+        Node* oldNode = head;
+
+        while (oldNode->next != NULL) {         // iterate through list
+
+            if(oldNode->key == oldKey) {        // if key of node matches oldKey
+                Node* newNode = new Node;       // create new node with key newKey
+                newNode->key = newKey;
+
+                newNode->next = oldNode->next;  // and place it in list after oldNode
+                oldNode->next = newNode;
+                return;                         // return here; we don't want to do any more
+            }
+            oldNode = oldNode->next;
+        }
+
+        if (oldNode->key == oldKey) {           // If key of last node matches,
+            Node* newNode = new Node;           // create new node with key newKey
+            newNode->key = newKey;
+
+            newNode->next = NULL;               // place new node at end of list, pointing to NULL
+            oldNode->next = newNode;
+        }
+    }
 }
+
 
 /** 
  * Create a new linked_list by merging two existing linked_lists. 
@@ -102,7 +177,54 @@ void insert_after(Node* head, int oldKey, int newKey){
  * For example: [1, 2] and [3, 4, 5] would return [1, 3, 2, 4, 5]
  */
 Node* interleave(Node* list1, Node* list2){
-  // ******** WRITE YOUR CODE HERE ********
-  return NULL;  // ******** DELETE THIS LINE ********
+    Node* newList = new Node;
+    Node* newNode = newList;
+    Node* node1 = list1;
+    Node* node2 = list2;
 
+    if(node1) {                     // initialize first element if available
+        newNode->key = node1->key;
+        node1 = node1->next;
+    } else if (node2){
+        newNode->key = node2->key;
+        node2 = node2->next;
+    } else {                        // if no elements available, both lists are empty
+        return NULL;
+    }
+
+    while (node1 != NULL && node2 != NULL) {    // iterate through both lists until we reach the end of one
+
+        Node* tempNode1 = new Node;     // create new nodes
+        Node* tempNode2 = new Node;
+
+        tempNode1->key = node1->key;    // copy respective keys
+        tempNode2->key = node2->key;
+
+        newNode->next = tempNode2;      // add pair of nodes in order
+        tempNode2->next = tempNode1;
+        newNode = tempNode1;
+
+        node1 = node1->next;            // get next pair
+        node2 = node2->next;
+    }
+
+    if (node1 == NULL) {                    // if list 1 is empty, copy remainder of list 2
+        while (node2 != NULL) {
+            Node* tempNode = new Node;
+            tempNode->key = node2->key;
+            newNode->next = tempNode;
+            newNode = tempNode;
+            node2 = node2->next;
+        }
+    } else {                                // otherwise, list 2 is empty. Copy remainder of list 1.
+        while (node1 != NULL) {
+            Node* tempNode = new Node;
+            tempNode->key = node1->key;
+            newNode->next = tempNode;
+            newNode = tempNode;
+            node1 = node1->next;
+        }
+    }
+
+    return newList;
 }

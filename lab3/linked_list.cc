@@ -176,6 +176,7 @@ void insert_after(Node* head, int oldKey, int newKey){
  * When one list is exhausted, the remaining keys come from the other list.
  * For example: [1, 2] and [3, 4, 5] would return [1, 3, 2, 4, 5]
  */
+/*
 Node* interleave(Node* list1, Node* list2){
     Node* newList = new Node;
     Node* newNode = newList;
@@ -228,3 +229,31 @@ Node* interleave(Node* list1, Node* list2){
 
     return newList;
 }
+*/
+Node* interleave(Node* list1, Node* list2) {
+    Node* node1 = list1;
+    Node* node2 = list2;
+    Node* tempNode1 = new Node;
+
+    if(node1 && node2) {                // list1 and list2 both not empty
+        Node* tempNode2 = new Node;
+
+        tempNode1->key = node1->key;    // take first node in list1 first
+        tempNode1->next = tempNode2;
+
+        tempNode2->key = node2->key;    // then first node in list2, followed by remainder of both lists, interleaved
+        tempNode2->next = interleave(node1->next, node2->next);
+
+
+    } else if (node1) {                 // list2 is empty
+        tempNode1->key = node1->key;
+        tempNode1->next = interleave(node1->next, NULL);
+    } else if (node2) {                 // list1 is empty
+        tempNode1->key = node2->key;
+        tempNode1->next = interleave(NULL, node2->next);
+    } else {                            // both empty, return NULL
+        return NULL;
+    }
+    return tempNode1;                   // return pointer to first node in interleaved list
+}
+

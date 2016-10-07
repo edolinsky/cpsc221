@@ -6,20 +6,12 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include "Entry.h"
 
 #define PAGE_LENGTH 40
 
-struct entry {
-    std::string word;
-    int count;
-    std::vector<int> pages;
-};
-
-long find(std::string targetWord, std::vector<entry>& words);
-void insert(std::string, std::vector<entry>& words);
-void printInOrder(std::ostream & output, std::vector<entry>& words);
-void insertUniquePage(int page, std::vector<int>& pages);
-
+long find(std::string targetWord, std::vector<Entry>& words);
+Entry * insert(std::string, std::vector<Entry>& words);
 
 // The following function should be moved into your skiplist.cc file when you
 // write that.  It implements the random bit generation.
@@ -37,29 +29,6 @@ int randBit(void) {             // return a "random" bit
     bits >>= 1;
     bitsUpperBd >>= 1;
     return b;
-}
-
-/**
- * Inserts a page number into vector of pages only if the page does not already exist in that vector
- * @param page integer denoting page number
- * @param pages vector of page numbers
- */
-void insertUniquePage(int page, std::vector<int>& pages) {
-    std::vector<int>::iterator it;
-
-    if (pages.size() == size_t(0)) {        // if pages is empty, add first page
-        pages.push_back(page);
-    } else {                                // otherwise, find where page number should belong
-
-        for (it = pages.begin(); it != pages.end(); ++it) {
-            if (*it > page) {           // if value at this index is greater, this is where page number should go
-                break;
-            } else if (*it == page) {   // if this page already exists in list, do nothing
-                return;
-            }
-        }
-        pages.insert(it, page);         // insert page at desired index
-    }
 }
 
 // Remove all characters except letters (A-Z,a-z) from line,
@@ -82,12 +51,12 @@ void print(std::ostream & output, std::string & word) {
     output << word << std::endl;
 }
 /**
- * Find the index of a particular entry in a list using a non-recursive binary search
+ * Find the index of a particular Entry in a list using a non-recursive binary search
  * @param targetWord A string containing a single word which we wish to find in words
- * @param words A vector of entry structs, ordered by the value of their string 'word'
+ * @param words A vector of Entry structs, ordered by the value of their string 'word'
  * @return index of targetWord in words, or -1 if not found
  */
-long find(std::string targetWord, std::vector<entry>& words) {
+long find(std::string targetWord, std::vector<Entry>& words) {
     long bottom = 0;
     long top = (long)words.size() - 1;
     unsigned long middle;
@@ -96,11 +65,11 @@ long find(std::string targetWord, std::vector<entry>& words) {
 
         middle = (unsigned long)bottom + ((top - bottom) / 2);     // find integer middle index (left on even size) in words
 
-        if (targetWord.compare(words.at(middle).word) == 0) {        // return middle if it matches our word
+        if (targetWord.compare(words.at(middle).getWord()) == 0) {        // return middle if it matches our word
             return middle;
-        } else if (targetWord.compare(words.at(middle).word) < 0) {  // take lower half if target is less than middle
+        } else if (targetWord.compare(words.at(middle).getWord()) < 0) {  // take lower half if target is less than middle
             top = middle - 1;
-        } else if (targetWord.compare(words.at(middle).word) > 0) {  // take upper half if target is more than middle
+        } else if (targetWord.compare(words.at(middle).getWord()) > 0) {  // take upper half if target is more than middle
             bottom = middle + 1;
         }
     }
@@ -114,43 +83,33 @@ long find(std::string targetWord, std::vector<entry>& words) {
  * @param words vector of word entries in which to insert newWord
  * @return index of inserted newWord in words
  */
-void insert(std::string newWord, std::vector<entry>& words) {
+Entry * insert(std::string newWord, std::vector<Entry>& words) {
 
     // create new entry
-    entry *newEntry = new entry;
-    newEntry->word = newWord;
-    newEntry->count = 1;
-    std::vector<entry>::iterator it;
+    Entry *newEntry = new Entry(newWord);
+    std::vector<Entry>::iterator it;
 
     if (words.size() == size_t(0)) {    // if words is empty, add first word
         words.push_back(*newEntry);
     } else {                            // otherwise, find insertion point
 
         for (it = words.begin(); it != words.end(); ++it) {
-            if (it->word > newWord) {   // if word here is alphabetically larger, this is where this word should go
+            if (it->getWord() > newWord) {   // if word here is alphabetically larger, this is where this word should go
                 break;
             }
         }
         words.insert(it, *newEntry);    // insert word here
     }
+
+    return newEntry;
 }
 
-void printInOrder(std::ostream & output, std::vector<entry>& words) {
+void printInOrder(std::ostream & output, std::vector<Entry>& words) {
     std::stringstream info; // message buffer
     std::string out;        // string output
 
-    for( std::vector<entry>::iterator it = words.begin(); it != words.end(); it++) {    // iterate through word list
-        std::string page_separator = "";                // initialize separator for page numbers
-        info << it->word << " (" << it->count << ") ";  // concat word and number of times it was found
-
-        // iterate over page list
-        for (std::vector<int>::iterator page = it->pages.begin(); page != it->pages.end(); page++) {
-
-            info << page_separator << *page;    // add page number
-            page_separator = ",";               // change separator after first iteration
-
-        }
-        info << std::endl;                      // end line after page numbers
+    for( std::vector<Entry>::iterator it = words.begin(); it != words.end(); it++) {    // iterate through word list
+        it->printTo(&info);
     }
     out = info.str();       // convert buffer to string
     print(output, out);     // print string
@@ -177,7 +136,7 @@ int main(int argc, char *argv[]) {
     }
 
     std::string line, word;
-    std::vector<entry> words;
+    std::vector<Entry> words;
     int lineNum = 1;    // line tracker
 
     while( !fin.eof() ) {                   // iterate over lines
@@ -186,14 +145,17 @@ int main(int argc, char *argv[]) {
         std::istringstream iss(line, std::istringstream::in);
         while( iss >> word ) {              // iterate over words in line
             long index = find(word, words); // find word in list of words
+            Entry *entry;
             if(index >= 0){                             // if found
-                words.at((unsigned long)index).count++; // increment count
+                entry = &words.at((unsigned long)index);
+                entry->incrementCount();                // increment count
             } else {
-                insert(word, words);                    // if not found, add to list
+                entry = insert(word, words);                    // if not found, add to list
+
             }
 
             // add page number to this word's page list if unique
-            insertUniquePage((int) std::floor(lineNum / PAGE_LENGTH + 1), words.at((unsigned long) find(word, words)).pages);
+            entry->foundOnPage((int) std::floor(lineNum / PAGE_LENGTH + 1));
         }
         // increment line tracker
         lineNum++;

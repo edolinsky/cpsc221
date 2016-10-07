@@ -6,7 +6,7 @@ all : index
 # add any new .o files to the list
 # build it using g++
 index : index.o
-	g++ -o index -g index.o
+	g++ -o index -g index.o Entry.o
 
 # index.o is dependant on one .cc file and no .h files
 # IMPORTANT: when you #include a new .h file, be sure to add it here.
@@ -17,11 +17,10 @@ index : index.o
 # -c: only compile, don't link (we do that above)
 # -g: put in debug information, for those of you who are using
 # debuggers (like gdb or ddd or xxgdb)
-index.o : index.cc
-	g++ -Wall -c -g index.cc
+index.o : index.cc Entry.h
+	g++ -Wall -c -g index.cc Entry.cc
 
 # and same idea for other .o files ...
-
 
 
 # 'clean' removes any files that were created via the Makefile,

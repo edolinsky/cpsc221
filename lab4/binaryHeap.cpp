@@ -53,26 +53,31 @@ void sort(int* heap, int size) {
 //POST: The first size elements of heap are printed as a tree
 void printHeap(int *heap, int size, int node=0, int d=0) {
 
-    /* //Q1
-    cout << string((unsigned long)d, '*') << *(heap + node) << endl;    // print this node
+     //Q1
+    /*
+    if (size > 0) {
+        cout << string((unsigned long) d, '*') << *(heap + node) << endl;    // print this node
 
-    if (node * 2 + 1 < size) {      // if left child exists, print it and its children
-        printHeap(heap, size, node * 2 + 1, d + 1);
-        if(node * 2 + 2 < size) {   // if right child exists, print it and its children
-            printHeap(heap, size, node * 2 + 2, d + 1);
+        if (node * 2 + 1 < size) {      // if left child exists, print it and its children
+            printHeap(heap, size, node * 2 + 1, d + 1);
+            if (node * 2 + 2 < size) {   // if right child exists, print it and its children
+                printHeap(heap, size, node * 2 + 2, d + 1);
+            }
         }
     }
-    */
+     */
 
     // Q2
-    if(node * 2 + 2 < size) {       // if right child exists, print it and its children (children first)
-        printHeap(heap, size, node * 2 + 2, d + 1);
-    }
+    if (size > 0) {
+        if (node * 2 + 2 < size) {       // if right child exists, print it and its children (children first)
+            printHeap(heap, size, node * 2 + 2, d + 1);
+        }
 
-    cout << string((unsigned long) 2 * d, ' ') << *(heap + node) << endl;    // print this node
+        cout << string((unsigned long) 2 * d, ' ') << *(heap + node) << endl;    // print this node
 
-    if (node * 2 + 1 < size) {      // if left child exists, print it and its children (children first)
-        printHeap(heap, size, node * 2 + 1, d + 1);
+        if (node * 2 + 1 < size) {      // if left child exists, print it and its children (children first)
+            printHeap(heap, size, node * 2 + 1, d + 1);
+        }
     }
 
 }
@@ -83,15 +88,50 @@ void printHeap(int *heap, int size, int node=0, int d=0) {
 //POST: all elements with key value = key have been removed from
 //	the heap and size is the new heap size.
 void remove(int* heap, int key, int & size) {
-    // TODO: put your code for Question 3 here
+
+    // Asymptotic time complexity is O(size), as first iteration takes O(size), heapify takes O(newSize),
+    // second iteration takes O(newSize), and newSize <= size.
+    int newSize = 0;
+    int* newHeap = new int[size];
+
+    for (int i = 0; i < size; i++) {
+        if (heap[i] != key) {
+            newHeap[newSize] = heap[i];
+            newSize++;
+        }
+    }
+
+    heapify(newHeap, newSize);
+
+    for (int i = 0; i < newSize; i++) {
+        heap[i] = newHeap[i];
+    }
+
+    size = newSize;
+    delete newHeap;
 }
 
 //PRE:  heap1 and heap2 contain size1 and size2 elements respectively.
 //POST: output a new heap (whose size is size1+size2) containing all
 //      the elements in heap1 and heap2 (including duplicates).
 int* mergeHeap(int* heap1, int* heap2, int size1, int size2) {
-    // TODO: replace the following line with your code for Question 4
-    return NULL;
+
+    // Asymptotic time complexity is O(size1+size2), as heap1 iteration takes O(size1), heap2 iteration takes O(size2),
+    // and heapify takes O(size1+size2).
+
+    int* mergedHeap = new int[size1 + size2];    // allocate space for new heap
+
+    int size = 0;   // size of merged heap
+    for (int i = 0; i < size1; i++, size++) {   // copy elements from heap 1
+        mergedHeap[size] = heap1[i];
+    }
+    for (int i = 0; i < size2; i++, size++) {   // copy elements from heap 2
+        mergedHeap[size] = heap2[i];
+    }
+
+    heapify(mergedHeap, size);      // heapify merged list
+
+    return mergedHeap;
 }
 
 int input1[] = {8,3,5,6,2,9,1,7,4,0};

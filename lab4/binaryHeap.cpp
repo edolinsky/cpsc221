@@ -89,6 +89,17 @@ void printHeap(int *heap, int size, int node=0, int d=0) {
 //	the heap and size is the new heap size.
 void remove(int* heap, int key, int & size) {
 
+
+    for (int i = 0; i < size; i++) { // iterate over nodes in heap
+        if (heap[i] == key) {           // if node matches key,
+            heap[i] = heap[size - 1];   // swap out for element at end
+            size--;                     // decrement size
+            swapDown(heap, i,size);     // swap node down to validate heap
+            i--;                        // evaluate this node again in case key node was swapped in
+        }
+    }
+
+    /*
     // Asymptotic time complexity is O(size), as first iteration takes O(size), heapify takes O(newSize),
     // second iteration takes O(newSize), and newSize <= size.
     int newSize = 0;
@@ -109,6 +120,7 @@ void remove(int* heap, int key, int & size) {
 
     size = newSize;
     delete newHeap;
+     */
 }
 
 //PRE:  heap1 and heap2 contain size1 and size2 elements respectively.

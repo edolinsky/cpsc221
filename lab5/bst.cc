@@ -210,7 +210,17 @@ int height( Node* x ) {
  * Returns the depth of node x in the tree rooted at root.
  */
 int depth( Node* root, Node* x ) {
-
+    int d = 0;
+    if (root != NULL) {     // evaluate only if root is not null
+        if (root->key == x->key) {      // if matching, return 0
+            d = 0;
+        } else if (root->right && x->key > root->key) {     // if right child exists and x larger than this node's key
+            d = depth(root->right, x) + 1;                  // evaluate depth of x under right child and increment
+        } else if (root->left){             // if left child exists and x smaller than this node's key
+            d = depth(root->left, x) + 1;   // evaluate depth of x under left child and increment
+        }
+    }
+    return d;
 }
 
 /**

@@ -1,1 +1,1 @@
-add_executable(index, index.cc Entry.cpp Entry.h)
+add_executable(index, index.cc Entry.cc Entry.h skiplist.cc skiplist.h)

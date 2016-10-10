@@ -6,9 +6,9 @@ all : index
 # add any new .o files to the list
 # build it using g++
 index : index.o
-	g++ -o index -g index.o Entry.o
+	g++ -o index -g index.o Entry.o skiplist.o
 
-# index.o is dependant on one .cc file and no .h files
+# index.o is dependant on one .cc file and two .h files
 # IMPORTANT: when you #include a new .h file, be sure to add it here.
 # Otherwise, the 'make' command may not re-build your program even
 # though you changed that .h file.
@@ -17,8 +17,8 @@ index : index.o
 # -c: only compile, don't link (we do that above)
 # -g: put in debug information, for those of you who are using
 # debuggers (like gdb or ddd or xxgdb)
-index.o : index.cc Entry.h
-	g++ -Wall -c -g index.cc Entry.cc
+index.o : index.cc Entry.h skiplist.h
+	g++ -Wall -c -g index.cc Entry.cc skiplist.cc
 
 # and same idea for other .o files ...
 

@@ -89,7 +89,7 @@ void printHeap(int *heap, int size, int node=0, int d=0) {
 //	the heap and size is the new heap size.
 void remove(int* heap, int key, int & size) {
 
-    // Asymptotic time complexity is O(size * lg(size)) worst case, as we evaluate each node only once; swapDown takes O(lg(size))
+    // Asymptotic time complexity is O(size) worst case, as we evaluate each node only once
     for (int i = 0; i < size; i++) { // iterate over nodes in heap
         if (heap[i] == key) {           // if node matches key,
             heap[i] = heap[size - 1];   // swap out for element at end

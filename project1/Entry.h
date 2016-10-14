@@ -25,6 +25,9 @@ public:
     std::vector<int> getPages();
     void printTo(std::stringstream * info);
     ~Entry();
+
+private:
+    std::string getPageList();
 };
 
 

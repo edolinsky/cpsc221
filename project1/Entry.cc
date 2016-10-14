@@ -25,21 +25,46 @@ int Entry::incrementCount() {
 }
 
 void Entry::printTo(std::stringstream * info) {
-    std::string page_separator = "";                // initialize separator for page numbers
     *info << word << " (" << count << ") ";  // concat word and number of times it was found
-
-    // iterate over page list
-    for (std::vector<int>::iterator page = pages.begin(); page != pages.end(); page++) {
-
-        *info << page_separator << *page;    // add page number
-        page_separator = ",";               // change separator after first iteration
-
-    }
+    *info << getPageList();
     *info << std::endl;                      // end line after page numbers
 }
 
 std::vector<int> Entry::getPages() {
     return pages;
+}
+
+std::string Entry::getPageList() {
+    std::stringstream pageList;
+    // pages are already sorted so any sequential pages will be sequential in the vector
+
+    // iterate over page list
+    int startPage = *pages.begin();
+    int endPage = *pages.begin();
+    for (std::vector<int>::iterator page = pages.begin(); page != pages.end(); page++) {
+        if (*page != startPage) {
+            if (*page == endPage + 1) {
+                endPage++;
+            } else {
+                if (startPage != endPage) {
+                    pageList << startPage << "-" << endPage << ", ";
+                } else {
+                    pageList << startPage << ", ";
+                }
+                endPage = startPage = *page;
+            }
+        }
+
+    }
+
+    // last round of pages won't be added by that loop:
+    if (startPage != endPage) {
+        pageList << startPage << "-" << endPage;
+    } else {
+        pageList << startPage;
+    }
+
+    return pageList.str();
 }
 /**
  * Inserts a page number into vector of pages only if the page does not already exist in that vector

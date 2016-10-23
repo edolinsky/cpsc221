@@ -34,19 +34,33 @@ void quicksort(int a, int b) {
 }
 
 int qc(int n) {
-    if (n <= 1) return 0;
-    else if (n == 2) return 1;
+    if (n <= 1) return 0;       // no comparisons required for 0 or 1 elements
+    else if (n == 2) return 1;  // one comparison for 2 elements
 
-    int count = n - 1;
+    int count = n - 1;          // n - 1 comparisons otherwise
 
-    int pivot = randint(0, n - 1);
-    count += qc(pivot);
-    count += qc(n - pivot - 1);
+    int pivot = randint(0, n - 1);  // pick a random number for pivot
+    count += qc(pivot);             // add comparisons on left partition
+    count += qc(n - pivot - 1);     // add comparisons on right partition
 
     return count;
 }
 
-#define NN 10000000
+// Q4.
+//
+//           n
+//          ___
+//       1  \    (n-1) + C(m-1) + C(n-m)
+// C(n)= -  /
+//       n  ---
+//          m=1
+//
+// Q5.
+// Average-case runtime for quicksort is theta(nlogn), while worst-case runtime is theta(n^2).
+// We are unlikely to see worst-case, as it would require us to pick pivot index of 0 or n-1
+// with every single call to quicksort, which is statistically unlikely.
+
+#define NN 1000
 #define NUM_TIMES 100
 
 int main(int argc, char *argv[]) {

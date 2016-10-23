@@ -59,6 +59,9 @@ int qc(int n) {
 // Average-case runtime for quicksort is theta(nlogn), while worst-case runtime is theta(n^2).
 // We are unlikely to see worst-case, as it would require us to pick pivot index of 0 or n-1
 // with every single call to quicksort, which is statistically unlikely.
+// This implementation is not stable, but is in-place. We do not keep track of the order of
+// equal elements, and they can easily be swapped around. Since we do not use any more space than
+// what is required for the array and call stack, it is in-place.
 
 #define NN 1000
 #define NUM_TIMES 100
@@ -70,6 +73,7 @@ int main(int argc, char *argv[]) {
                 std::chrono::system_clock::now().time_since_epoch()).count();
         srand(seed);
 
+        // actual quicksort
         /*
         x = new int[NN];
         for (int i = 0; i < NN; ++i) {
@@ -84,6 +88,7 @@ int main(int argc, char *argv[]) {
         delete[] x;
          */
 
+        // counting number of comparisons in quicksort (not actually sorting)
         comps += qc(NN);
 
     }

@@ -57,7 +57,7 @@ int qc(int n) {
 //
 // Q5.
 // Average-case runtime for quicksort is theta(nlogn), while worst-case runtime is theta(n^2).
-// We are unlikely to see worst-case, as it would require us to pick pivot index of 0 or n-1
+// We are unlikely to see worst-case, as it would require us to pick the smallest or largest value pivot
 // with every single call to quicksort, which is statistically unlikely.
 // This implementation is not stable, but is in-place. We do not keep track of the order of
 // equal elements, and they can easily be swapped around. Since we do not use any more space than

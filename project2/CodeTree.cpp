@@ -3,3 +3,19 @@
 //
 
 #include "CodeTree.h"
+
+CodeTree::CodeTree(int *) {
+
+}
+
+void CodeTree::printCode() {
+
+}
+
+void CodeTree::printTree(int) {
+
+}
+
+void CodeTree::printChar(int) {
+
+}

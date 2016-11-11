@@ -7,7 +7,13 @@
 
 
 class CodeTree {
+public:
+    CodeTree(int *);
+    void printTree();
+    void printCode();
 
+private:
+    void printChar(int);
 };
 
 

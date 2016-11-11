@@ -13,12 +13,14 @@ void usage(char *argv[]) {
 
 /*
  * 1. Linear probing is just as good as quadratic when the table is sufficiently empty. Once the table starts to fill
- * up, linear probing starts to cluster, and quadratic probing begins to win out.
+ * up, linear probing starts to cluster, and quadratic probing begins to win out. However, there is still a higher
+ * chance of failure with quadratic probing in tables with non-prime size.
  *
- * 2. The choice of second hash function can affect the amount of clustering that occurs, and therefore the performance
- * of probing. Further, if a poor hash function is chosen (i.e. one that allows hashing to '0'), superfluous failures
- * may occur. Yes, and yes, depending on the hash functions chosen; probing rates would generally be lower, but the
- * number of failures may be higher, depending on the failure threshold chosen.
+ * 2. The choice of second hash function can affect the amount of clustering and average number of probes per insert,
+ * and therefore the performance of probing. Further, if a poor hash function is chosen
+ * (i.e. one that allows hashing to '0'), superfluous failures may occur.
+ * Yes, and yes, depending on the hash functions chosen; probing rates would generally be lower, but the number of
+ * failures may be higher, depending on the failure threshold chosen.
  *
  * 3. Double hashing begins to win against linear when linear begins to cluster, and begins to win against quadratic
  * when the number of keys reaches half of the table size, and always for tables of non-prime size.

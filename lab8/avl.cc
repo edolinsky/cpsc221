@@ -172,7 +172,7 @@ void balance(Node *&x) {
     int leftHeight, rightHeight;
 
     // determine height of right and left nodes
-    if(x->left == NULL && x->right == NULL) {
+    if(x == NULL || (x->left == NULL && x->right == NULL)) {
         // no children; nothing to do
         return;
 
@@ -196,8 +196,8 @@ void balance(Node *&x) {
     long leftRelativeToRight = leftHeight - rightHeight;
 
     if (leftRelativeToRight > 1) {
-        // left heavy, check whether left->right or right->left is greater
-        if(x->left->left > x->left->right) {
+        // left heavy, check whether left->right or right->left is causing imbalance
+        if( x->left->left && (leftHeight == x->left->left->height + 1)) {
             // case LL: single rotate right
             rotateRight(x);
         } else {
@@ -206,13 +206,13 @@ void balance(Node *&x) {
         }
 
     } else if (leftRelativeToRight < -1) {
-        // right heavy, check whether right->right or right->left is greater
-        if(x->right->right > x->right->left) {
+        // right heavy, check whether right->right or right->left is causing imbalance
+        if(x->right->right && (rightHeight == x->right->right->height + 1)) {
             // case RR: single rotate left
-            rotateLeft(*&x);
+            rotateLeft(x);
         } else {
             // case RL: double rotate left
-            doubleRotateLeft(*&x);
+            doubleRotateLeft(x);
         }
 
     }

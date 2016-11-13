@@ -1,13 +1,23 @@
-//
-// Created by erik on 10/11/16.
-//
 
 #ifndef PROJECT_PRIORITYQUEUE_H
 #define PROJECT_PRIORITYQUEUE_H
 
 
-class PriorityQueue {
+#include <vector>
+#include "Node.h"
 
+class PriorityQueue {
+    std::vector<Node> heap;
+
+public:
+    PriorityQueue(std::vector<Node> nodeVector);
+    void insert(Node* node);
+    Node * popMin();
+    ~PriorityQueue();
+private:
+    void swapDown(long i);
+    void swapUp(long i);
+    void heapify();
 };
 
 

@@ -1,1 +1,1 @@
-add_executable(huftree, huftree.cc CodeTree.cpp CodeTree.h PriorityQueue.cpp PriorityQueue.h Node.cpp Node.h)
+add_executable(huftree, huftree.cc CodeTree.cc CodeTree.h PriorityQueue.cc PriorityQueue.h Node.cc Node.h)

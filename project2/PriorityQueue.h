@@ -7,17 +7,25 @@
 #include "Node.h"
 
 class PriorityQueue {
-    std::vector<Node*> heap;
+    std::vector<Node *> heap;
 
 public:
     PriorityQueue();
+
     long size();
-    void insert(Node* node);
-    Node * popMin();
+
+    void insert(Node *node);
+
+    Node *popMin();
+
     ~PriorityQueue();
+
 private:
     void swapDown(long i);
+
     void swapUp(long i);
+
+    /** @deprecated **/
     void heapify();
 };
 

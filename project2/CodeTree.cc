@@ -10,7 +10,7 @@ CodeTree::CodeTree(PriorityQueue *queue) {
         Node *one = queue->popMin();
         Node *two = queue->popMin();
 
-        Node *parent = new Node(one->frequency + two->frequency, NULL, one, two);
+        Node *parent = new Node(one->frequency + two->frequency, one, two);
         queue->insert(parent);
     }
 
@@ -26,7 +26,7 @@ CodeTree::~CodeTree() {
  * Prints a full codetree, including branch labels and characters at leaves
  */
 void CodeTree::printTree() {
-    printTreeHelper(tree, "");
+    printTreeHelper(tree);
 }
 
 
@@ -38,7 +38,7 @@ void CodeTree::printTree() {
  * @param level depth of node in tree
  */
 void CodeTree::recursePrintTree(Node *head, int level) {
-    if (head->character != NULL) {
+    if (head->character != -1) {    // -1 used for value of null character (see Node.h)
         // leaf
         printChar(head->character);
         std::cout << std::endl;
@@ -105,7 +105,7 @@ void CodeTree::printBars(int level) {
  * Prints list of characters and codes in codetree
  */
 void CodeTree::printCode() {
-    recursePrintCodes(tree, "");
+    recursePrintCodes(tree);
 }
 
 /**
@@ -115,7 +115,7 @@ void CodeTree::printCode() {
  */
 void CodeTree::recursePrintCodes(Node *head, std::string trail) {
 
-    if (head->character != NULL) {
+    if (head->character != -1) {    // -1 used for value of null character (see Node.h)
         printChar(head->character);
         std::cout << ":" << trail << std::endl;
 

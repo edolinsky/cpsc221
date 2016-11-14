@@ -25,7 +25,7 @@ private:
 
     void swapUp(long i);
 
-    /** @deprecated **/
+    // not used
     void heapify();
 };
 

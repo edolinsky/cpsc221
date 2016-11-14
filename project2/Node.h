@@ -11,7 +11,8 @@ public:
     Node *left;
     Node *right;
 
-    Node(int frequency, char character = NULL, Node *left = NULL, Node *right = NULL);
+    // -1 used for value of null character
+    Node(int frequency, Node *left = NULL, Node *right = NULL, char character = -1);
 
     ~Node();
 };

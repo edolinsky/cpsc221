@@ -60,7 +60,7 @@ void PriorityQueue::swapDown(long i) {
 }
 
 /**
- * @deprecated
+ * @note: not used
  *
  * heapifies this Priority Queue's heap vector
  */

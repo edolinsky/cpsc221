@@ -20,12 +20,12 @@ public:
 private:
     void printChar(int);
 
-    void recursePrintTree(Node *head, int level);
+    void printTreeHelper(Node *r, std::string pre = "");
 
-    void printTreeHelper(Node *r, std::string pre);
+    void recursePrintCodes(Node *head, std::string trail = "");
 
     /** @deprecated **/
-    void recursePrintCodes(Node *head, std::string trail);
+    void recursePrintTree(Node *head, int level);
 
     /** @deprecated **/
     void printBars(int level);

@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     PriorityQueue *queue = new PriorityQueue();
     for (int i = 0; i < 256; i++) {
         if (freq[i] != 0) {
-            queue->insert(new Node(freq[i], i));
+            queue->insert(new Node(freq[i], NULL, NULL, i));
         }
     }
 

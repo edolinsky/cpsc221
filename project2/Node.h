@@ -6,13 +6,13 @@
 class Node {
 
 public:
+    static const int NULL_CHAR  = -1; // -1 used for value of null character
     char character;
     int frequency;
     Node *left;
     Node *right;
 
-    // -1 used for value of null character
-    Node(int frequency, Node *left = NULL, Node *right = NULL, char character = -1);
+    Node(int frequency, Node *left = NULL, Node *right = NULL, char character = NULL_CHAR);
 
     ~Node();
 };

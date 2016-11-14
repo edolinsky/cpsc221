@@ -38,7 +38,7 @@ void CodeTree::printTree() {
  * @param level depth of node in tree
  */
 void CodeTree::recursePrintTree(Node *head, int level) {
-    if (head->character != -1) {    // -1 used for value of null character (see Node.h)
+    if (head->character != Node::NULL_CHAR) {
         // leaf
         printChar(head->character);
         std::cout << std::endl;
@@ -115,7 +115,7 @@ void CodeTree::printCode() {
  */
 void CodeTree::recursePrintCodes(Node *head, std::string trail) {
 
-    if (head->character != -1) {    // -1 used for value of null character (see Node.h)
+    if (head->character != Node::NULL_CHAR) {
         printChar(head->character);
         std::cout << ":" << trail << std::endl;
 

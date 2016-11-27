@@ -353,6 +353,8 @@ void findStatsAndReport(std::function<void(Node *, double &, double &, int &)> f
 
     std::cout << type << "\tmean:" << avg << "\tvar:" << var << "\tn:" << count << "\t";
     std::cout << t2 - t1 << " secs" << std::endl;
+
+    //std::cout << SEQUENTIAL_CUTOFF << ", " << type << ", " << avg << ", " << var << ", " << count << ", " << t2 - t1 << std::endl;
     std::cout.flush();
 }
 

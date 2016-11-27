@@ -7,6 +7,7 @@
 #include <iomanip>	// provides setw()
 #include <cstdlib>	// provides atoi()
 #include <cassert>	// provides assert
+#include <cmath>
 #include <functional>	// provides std::function
 
 #define REPETITIONS 10        // Number of times we repeat the task.
@@ -280,7 +281,36 @@ void findStatsSequential(Node *root, double &avg, double &var, int &count) {
 //
 void findStatsHelper(Node *root, double &avg, double &var, int &count) {
 
-    // ************ TODO: Implement this! *************
+    double lavg, lvar, ravg, rvar;
+    int lcount, rcount;
+
+    // check whether this subtree contains at most SEQUENTIAL_CUTOFF nodes
+    // by checking whether 2^(h+1)-1 > SEQUENTIAL_CUTOFF
+    if (std::pow(2, (root->height + 1)) - 1 > SEQUENTIAL_CUTOFF) {
+        // contains more than at most SEQUENTIAL_CUTOFF nodes
+
+#pragma omp task untied shared(lavg, lvar, lcount)
+        {
+            findStatsHelper(root->left, lavg, lvar, lcount);
+        }
+
+        findStatsHelper(root->right, ravg, rvar, rcount);
+#pragma omp taskwait
+
+    } else {
+        // contains at most SEQUENTIAL_CUTOFF NODES
+
+        // Find stats in the left subtree.
+        findStatsSequential(root->left, lavg, lvar, lcount);
+
+        // Find stats in the right subtree.
+        findStatsSequential(root->right, ravg, rvar, rcount);
+    }
+
+    updateStats(root->value,
+                lavg, lvar, lcount,
+                ravg, rvar, rcount,
+                avg, var, count);
 
 }
 

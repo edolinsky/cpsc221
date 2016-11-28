@@ -10,7 +10,7 @@
 #include <cmath>
 #include <functional>	// provides std::function
 
-#define REPETITIONS 10        // Number of times we repeat the task.
+#define REPETITIONS 100        // Number of times we repeat the task.
 
 // ************* TODO: Pick a better cutoff value. *************
 int SEQUENTIAL_CUTOFF = 1100;    // Default height at which we switch from
@@ -351,10 +351,10 @@ void findStatsAndReport(std::function<void(Node *, double &, double &, int &)> f
     }
     t2 = omp_get_wtime();
 
-    std::cout << type << "\tmean:" << avg << "\tvar:" << var << "\tn:" << count << "\t";
-    std::cout << t2 - t1 << " secs" << std::endl;
+    //std::cout << type << "\tmean:" << avg << "\tvar:" << var << "\tn:" << count << "\t";
+    //std::cout << t2 - t1 << " secs" << std::endl;
 
-    //std::cout << SEQUENTIAL_CUTOFF << ", " << type << ", " << avg << ", " << var << ", " << count << ", " << t2 - t1 << std::endl;
+    std::cout << SEQUENTIAL_CUTOFF << ", " << type << ", " << avg << ", " << var << ", " << count << ", " << t2 - t1 << std::endl;
     std::cout.flush();
 }
 
@@ -401,8 +401,8 @@ int main(int argc, char *argv[]) {
     findStatsAndReport(&findStatsSequential, avlTree_root, "SEQUENTIAL");
 
     findStatsAndReport(&findStats, avlTree_root, "PARALLEL");
-    std::cout << "Cutoff = " << SEQUENTIAL_CUTOFF << "\t";
-    std::cout << "Number of processors = " << omp_get_num_procs() << std::endl;
+    //std::cout << "Cutoff = " << SEQUENTIAL_CUTOFF << "\t";
+    //std::cout << "Number of processors = " << omp_get_num_procs() << std::endl;
 
 
     // Free up allocated memory

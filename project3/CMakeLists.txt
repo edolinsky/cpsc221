@@ -1,2 +1,5 @@
 add_executable(generator0 generator0.cc)
 add_executable(generator1 generator1.cc)
+add_executable(generator2 generator2.cc)
+add_executable(generator3 generator3.cc)
+add_executable(generator4 generator4.cc)

@@ -9,15 +9,9 @@ int main(int argc, char *argv[]) {
     }
     int n = atoi(argv[1]);
 
-    // insert, incrementing
-    for (int i = 1; i <= n / 2; i++) {
+    for (int i = 2; i <= n - 1; i++) {
         std::cout << "I " << i << std::endl;
-    }
-
-    // remove, decrementing
-    for (int i = n / 2; i >= 1; i--) {
         std::cout << "R " << i << std::endl;
     }
-
     return 0;
 }

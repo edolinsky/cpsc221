@@ -9,14 +9,14 @@ int main(int argc, char *argv[]) {
     }
     int n = atoi(argv[1]);
 
-    // insert, incrementing
-    for (int i = 1; i <= n / 2; i++) {
+    // insert, decrementing
+    for (int i = n / 2; i >= 1; i--) {
         std::cout << "I " << i << std::endl;
     }
 
-    // remove, decrementing
-    for (int i = n / 2; i >= 1; i--) {
-        std::cout << "R " << i << std::endl;
+    // find elements not inserted
+    for (int i = n / 2 + 1; i <= n; i++) {
+        std::cout << "F " << i << std::endl;
     }
 
     return 0;

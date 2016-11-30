@@ -1,6 +1,12 @@
 #include <iostream>
 #include <cstdlib> // for atoi
 
+/**
+ * Inserts a set of decrementing integers, then attempts to find integers that do not exist
+ * @param argc
+ * @param argv
+ * @return
+ */
 int main(int argc, char *argv[]) {
     if (argc != 2)
     {

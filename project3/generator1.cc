@@ -1,6 +1,12 @@
 #include <iostream>
 #include <cstdlib> // for atoi
 
+/**
+ * Inserts a set of incrementing integers, then removes them, decrementing
+ * @param argc
+ * @param argv
+ * @return
+ */
 int main(int argc, char *argv[]) {
     if (argc != 2)
     {

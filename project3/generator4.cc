@@ -16,6 +16,7 @@ int main(int argc, char *argv[]) {
     }
     int n = atoi(argv[1]);
 
+    // insert and remove immediately, incrementing. Should give away data structures with tombstones
     for (int i = 1; i <= n / 2; i++) {
         std::cout << "I " << i << std::endl;
         std::cout << "R " << i << std::endl;

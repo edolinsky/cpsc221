@@ -13,5 +13,5 @@
 *.o
 *.pdf
 assignments/
-!project3/dict_runner-g7c9
+!project3/dict_runner*
 

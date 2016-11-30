@@ -23,6 +23,7 @@ Approximate work time: 10h
 * `generator2.cc` - Inserts n/2 integers decrementing, then attempts to find n/2 integers that have not been inserted
 * `generator3.cc` - Inserts n/4 integers incrementing, finds integer n/8 n/4 times, finds all integers incrementing, finds integer n/8+1 n/4 times
 * `generator4.cc` - Inserts and then immediately removes n/2 integers, incrementing
+* `generator5.cc` - Inserts n integers incrementing. Didn't help us much with identification, but bumped up the differentiation score quite a bit
 
 ### Sample Input
 
